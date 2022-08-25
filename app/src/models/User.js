@@ -1,4 +1,5 @@
 "use strict";
+const { getUserInfo } = require("./UserStorage");
 const UserStorage = require("./UserStorage");
 
 class User{
@@ -6,18 +7,23 @@ class User{
         this.body = body; 
     }
 
-    login(){
-        const body = this.body;
-        // const {id, psword} = UserStorage.getUsers("id", "psword");
-        const {id, psword} = UserStorage.getUserInfo(body.id);
-
+    async login(){
+        const client = this.body;
+        const {id, psword} = await UserStorage.getUserInfo(client.id);
+        
         if(id){
-            if(id === body.id && psword === this.body.psword){
+            if(id === client.id && psword === client.psword){
                 return {success: true};
             }
             return {success: false, msg: "비밀번호가 틀렸습니다."};
         }
-        return {success: false, msg: "존재하지않는 아이디입니다"};
+        return {success: false, msg: "존재하지않는 아이디입니다."};
+    }
+ 
+    register(){
+        const client = this.body;
+        const response = UserStorage.save(client);
+        return response;
     }
 }
 

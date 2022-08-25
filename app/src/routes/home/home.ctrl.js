@@ -19,14 +19,25 @@ const output = {
 
 
 const process = {
-    login: (req, res) => {
+    login: async (req, res) => {
         // 클라이언트가 전달한 req
         const user = new User(req.body);
-        const response = user.login();
+        const response = await user.login();
+        return res.json(response);
+        // 클라이언트에 res 로 던져줌 
+        // return res.json(response);
+    }, 
+
+    register: (req, res) => {
+        // 클라이언트가 전달한 req
+        const user = new User(req.body);
+        const response = user.register();
         return res.json(response);
         // 클라이언트에 res 로 던져줌 
         // return res.json(response);
     }
+
+
 };
 
 
